@@ -1,0 +1,10 @@
+package com.cherry.mymusicapi.dto;
+
+import java.util.List;
+
+import com.cherry.mymusicapi.document.Album;
+
+public class AlbumListResponse {
+	private boolean success;
+	private List<Album> albums;
+}

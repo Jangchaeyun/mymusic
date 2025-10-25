@@ -1,0 +1,5 @@
+package com.cherry.mymusicapi.document;
+
+public class Album {
+
+}
