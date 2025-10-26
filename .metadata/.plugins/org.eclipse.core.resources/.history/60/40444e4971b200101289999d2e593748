@@ -1,0 +1,26 @@
+package com.cherry.mymusicapi.service;
+
+import java.io.IOException;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.cherry.mymusicapi.document.Album;
+import com.cherry.mymusicapi.dto.AlbumRequest;
+import com.cherry.mymusicapi.repository.AlbumRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class AlbumService {
+	private final AlbumRepository albumRepository;
+	private final Cloudinary cloudinary;
+	
+	public Album addAlbum(AlbumRequest request) throws IOException {
+		Map<String, Object> imageUploadResult = cloudinary.uploader().upload(request.getImageFile().getBytes(), ObjectUtils.asMap("resource_type", "image"));
+	}
+}
