@@ -1,0 +1,5 @@
+package com.cherry.mymusicapi.controller;
+
+public class AlbumController {
+
+}
