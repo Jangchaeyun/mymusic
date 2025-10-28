@@ -1,12 +1,14 @@
 package com.cherry.mymusicapi.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cherry.mymusicapi.document.Album;
+import com.cherry.mymusicapi.dto.AlbumListResponse;
 import com.cherry.mymusicapi.dto.AlbumRequest;
 import com.cherry.mymusicapi.repository.AlbumRepository;
 import com.cloudinary.Cloudinary;
@@ -31,5 +33,18 @@ public class AlbumService {
 			.build();
 		
 		return albumRepository.save(newAlbum);
+	}
+	
+	public AlbumListResponse getAllAlbums() {
+		return new AlbumListResponse(true, albumRepository.findAll());
+	}
+	
+	public Boolean removeAlbum(String id) {
+		Album existingAlbum = albumRepository.findById(id)
+			.orElseThrow(() -> new RuntimeException("Album not found"));
+		
+		
+		albumRepository.delete(existingAlbum);
+		return true;
 	}
 }
