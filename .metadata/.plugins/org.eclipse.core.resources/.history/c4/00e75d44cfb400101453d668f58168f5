@@ -1,0 +1,15 @@
+package com.cherry.mymusicapi.service;
+
+import org.springframework.stereotype.Service;
+
+import com.cherry.mymusicapi.repository.SongRepository;
+import com.cloudinary.Cloudinary;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class SongService {
+	private final SongRepository songRepository;
+	private final Cloudinary cloudinary;
+}

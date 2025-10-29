@@ -1,0 +1,21 @@
+package com.cherry.mymusicapi.document;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@Document(collection = "songs")
+
+public class Song {
+	@Id
+	@JsonProperty("_id")
+	private String id;
+	
+	private String name;
+	private String desc;
+	private String album;
+	private String image;
+	private String file;
+	private String duration;
+}
