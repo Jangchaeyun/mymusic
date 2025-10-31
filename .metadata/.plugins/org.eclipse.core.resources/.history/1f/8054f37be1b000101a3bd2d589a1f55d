@@ -1,7 +1,0 @@
-# MongoDB configuration
-spring.data.mongodb.uri=mongodb://localhost:27017/mymusicapp
-
-# Cloudinary configuration
-cloudinary.cloud-name=dmxnml9p1
-cloudinary.api-key=142698651711318
-cloudinary.api-secret=

@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+
 import com.cherry.mymusicapi.document.Song;
+import com.cherry.mymusicapi.dto.SongListResponse;
 import com.cherry.mymusicapi.dto.SongRequest;
 import com.cherry.mymusicapi.repository.SongRepository;
 import com.cloudinary.Cloudinary;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class SongService {
 
 	private final SongRepository songRepository;
+	private final SongService songService;
 	private final Cloudinary cloudinary;
 
 	
@@ -26,5 +29,39 @@ public class SongService {
 		
 		Double durationSeconds = (Double)audioUploadResult.get("duration");
 		String duration =  formatDuration(durationSeconds);
+		
+		Song newSong =  Song.builder()
+			.name(request.getName())
+			.desc(request.getDesc())
+			.album(request.getAlbum())
+			.image(imageUploadResult.get("secure_url").toString())
+			.file(audioUploadResult.get("secure_url").toString())
+			.duration(duration)
+			.build();
+		
+		return songRepository.save(newSong);
+	}
+	
+	private String formatDuration(Double durationSeconds) {
+		if (durationSeconds == null) {
+			return "0:00";
+		}
+		
+		int minutes = (int)(durationSeconds / 60);
+		int seconds = (int)(durationSeconds % 60);
+		
+		return String.format("%d:%02d",minutes, seconds);
+	}
+	
+	public SongListResponse getAllSongs() {
+		return new SongListResponse(true, songRepository.findAll());
+	}
+	
+	public Boolean removeSong(String id) {
+		Song existingSong = songRepository.findById(id)
+			.orElseThrow(() -> new RuntimeException("song not found"));
+		
+		songRepository.delete(existingSong);
+		return true;
 	}
 }
