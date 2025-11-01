@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 public class SongService {
 
 	private final SongRepository songRepository;
-	private final SongService songService;
 	private final Cloudinary cloudinary;
 
 	
