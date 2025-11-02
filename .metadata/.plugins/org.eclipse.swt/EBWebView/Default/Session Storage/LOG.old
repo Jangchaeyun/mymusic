@@ -1,3 +1,4 @@
-2025/11/01-23:00:24.796 5a64 Reusing MANIFEST D:\Project\spotify\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Session Storage/MANIFEST-000001
-2025/11/01-23:00:24.802 5a64 Recovering log #3
-2025/11/01-23:00:24.806 5a64 Reusing old log D:\Project\spotify\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Session Storage/000003.log 
+2025/11/02-22:59:07.324 25e4 Reusing MANIFEST D:\Project\spotify\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Session Storage/MANIFEST-000001
+2025/11/02-22:59:07.370 25e4 Recovering log #3
+2025/11/02-22:59:07.393 25e4 Level-0 table #3: started
+2025/11/02-22:59:07.394 25e4 Level-0 table #3: 0 bytes IO error: D:\Project\spotify\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Session Storage/000003.ldb: Unable to create writable file (ChromeMethodBFE: 9::NewWritableFile::16)

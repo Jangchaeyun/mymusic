@@ -1,5 +1,5 @@
 package com.cherry.mymusicapi.controller;
 
-public class RootController {
+public class AuthContorller {
 
 }
