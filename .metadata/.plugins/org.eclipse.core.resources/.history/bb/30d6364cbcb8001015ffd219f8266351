@@ -1,0 +1,5 @@
+package com.cherry.mymusicapi.dto;
+
+public class RegisterRequest {
+
+}

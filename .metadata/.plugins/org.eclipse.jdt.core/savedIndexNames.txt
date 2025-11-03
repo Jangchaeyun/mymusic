@@ -16,9 +16,9 @@ INDEX VERSION 1.134+D:\Project\spotify\.metadata\.plugins\org.eclipse.jdt.core
 4066950593.index
 4199988804.index
 860198030.index
-480402720.index
-2862085576.index
 3049188634.index
+2862085576.index
+480402720.index
 3886149107.index
 801126081.index
 3240542198.index

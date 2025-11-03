@@ -9,7 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.cloudinary.Url;
 
@@ -24,6 +25,11 @@ public class SecurityConfig {
 					.anyRequest().authenticated());
 		
 		return http.build();
+	}
+	
+	@Bean
+	public CorsFilter corsFilter() {
+		return new CorsFilter(corsConfigurationSource());
 	}
 	
 	private UrlBasedCorsConfigurationSource corsConfigurationSource() {

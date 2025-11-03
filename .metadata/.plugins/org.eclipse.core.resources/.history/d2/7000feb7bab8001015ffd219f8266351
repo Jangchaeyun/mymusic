@@ -1,0 +1,27 @@
+package com.cherry.mymusicapi.document;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Document(collection="users")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
+public class User {
+	
+	@Id
+	private String id;
+	private String email;
+	private String password;
+	private Role role = Role.USER;
+	
+	private enum Role {
+		USER,
+		ADMIN
+	}
+}
