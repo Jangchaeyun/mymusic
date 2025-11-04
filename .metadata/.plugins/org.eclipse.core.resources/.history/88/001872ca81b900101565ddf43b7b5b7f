@@ -1,0 +1,29 @@
+package com.cherry.mymusicapi.service;
+
+import org.springframework.stereotype.Service;
+
+import com.cherry.mymusicapi.document.User;
+import com.cherry.mymusicapi.document.User.Role;
+import com.cherry.mymusicapi.dto.RegisterRequest;
+import com.cherry.mymusicapi.dto.UserResponse;
+import com.cherry.mymusicapi.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+	private final UserRepository userRepository;
+	
+	public UserResponse registerUser(RegisterRequest request) {
+		if (userRepository.existsByEmail(request.getEmail())) {
+			throw new RuntimeException("Email already exists");
+		}
+		
+		
+		User.builder()
+			.email(request.getEmail())
+			.password(request.getPassword())
+			.role(User.Role.USER);
+	}
+}
