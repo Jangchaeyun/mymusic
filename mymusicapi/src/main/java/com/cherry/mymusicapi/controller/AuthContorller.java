@@ -22,7 +22,7 @@ public class AuthContorller {
 	
 	@PostMapping("/login")
 	public String login() {
-		return "This is login API";
+		
 	}
 	
 	@PostMapping("/register")
