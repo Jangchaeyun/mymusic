@@ -1,5 +1,6 @@
 package com.cherry.mymusicapi.service;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,6 @@ public class UserService {
 			throw new RuntimeException("Email already exists");
 		}
 		
-		
 		User newUser = User.builder()
 			.email(request.getEmail())
 			.password(passwordEncoder.encode(request.getPassword()))
@@ -35,5 +35,10 @@ public class UserService {
 				.email(newUser.getEmail())
 				.role(UserResponse.Role.USER)
 				.build();
+	}
+	
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email)
+		.orElseThrow(() -> new UsernameNotFoundException("User not found for the email: " + email));
 	}
 }
