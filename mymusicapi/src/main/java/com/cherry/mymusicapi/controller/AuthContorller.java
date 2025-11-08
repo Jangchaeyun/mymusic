@@ -18,6 +18,7 @@ import com.cherry.mymusicapi.dto.RegisterRequest;
 import com.cherry.mymusicapi.dto.UserResponse;
 import com.cherry.mymusicapi.service.AppUserDetailsService;
 import com.cherry.mymusicapi.service.UserService;
+import com.cherry.mymusicapi.util.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +30,7 @@ public class AuthContorller {
 	private final UserService userService;
 	private final AuthenticationManager authenticationManager;
 	private final AppUserDetailsService userDetailsService;
+	private final JwtUtil jwtUtil;
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AuthRequest request) {
@@ -38,7 +40,9 @@ public class AuthContorller {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
 			User existingUser = userService.findByEmail(request.getEmail());
 			
-			return ResponseEntity.ok(new AuthResponse("token", request.getEmail(), "USER"));
+			String token = jwtUtil.generateToken(userDetails, existingUser.getRole().name());
+			
+			return ResponseEntity.ok(new AuthResponse("token", request.getEmail(), existingUser.getRole().name()));
 		} catch (BadCredentialsException e) {
 			return ResponseEntity.badRequest().body("Email/Password is incorrect");
 		} catch (Exception e) {

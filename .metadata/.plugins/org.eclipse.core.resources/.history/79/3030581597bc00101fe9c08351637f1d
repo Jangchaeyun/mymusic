@@ -1,0 +1,31 @@
+package com.cherry.mymusicapi.util;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.cherry.mymusicapi.repository.SongRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+@Component
+public class JwtUtil {
+
+    private final SongRepository songRepository;
+	
+	@Value("${jwt.secret}")
+	private String secret;
+	
+	@Value("${jwt.expiration")
+	private Long expiration;
+
+    JwtUtil(SongRepository songRepository) {
+        this.songRepository = songRepository;
+    }
+	
+	private String generateToken(UserDetails userDetails, String role) {
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("role", role);
+		return createToken(claims, userDetails.getUsername())
+	}
+}
