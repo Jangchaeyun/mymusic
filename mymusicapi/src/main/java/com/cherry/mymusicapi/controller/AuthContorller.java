@@ -42,7 +42,7 @@ public class AuthContorller {
 			
 			String token = jwtUtil.generateToken(userDetails, existingUser.getRole().name());
 			
-			return ResponseEntity.ok(new AuthResponse("token", request.getEmail(), existingUser.getRole().name()));
+			return ResponseEntity.ok(new AuthResponse(token, request.getEmail(), existingUser.getRole().name()));
 		} catch (BadCredentialsException e) {
 			return ResponseEntity.badRequest().body("Email/Password is incorrect");
 		} catch (Exception e) {

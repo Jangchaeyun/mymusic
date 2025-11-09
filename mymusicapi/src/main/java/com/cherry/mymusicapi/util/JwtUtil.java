@@ -19,19 +19,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtUtil {
-
-    private final AlbumService albumService;
-
 	
 	@Value("${jwt.secret}")
 	private String secret;
 	
-	@Value("${jwt.expiration")
+	@Value("${jwt.expiration}")
 	private Long expiration;
-
-    JwtUtil(AlbumService albumService) {
-        this.albumService = albumService;
-    }
 	
 	public String generateToken(UserDetails userDetails, String role) {
 		Map<String, Object> claims = new HashMap<>();
@@ -40,14 +33,13 @@ public class JwtUtil {
 	}
 
 	private String createToken(Map<String, Object> claims, String email) {
-		Jwts.builder()
+		return Jwts.builder()
 			.claims(claims)
 			.subject(email)
 			.issuedAt(new Date(System.currentTimeMillis()))
 			.expiration(new Date(System.currentTimeMillis() + expiration))
 			.signWith(getSigningKey())
 			.compact();
-		return null;
 	}
 
 	private SecretKey getSigningKey() {
@@ -69,5 +61,18 @@ public class JwtUtil {
 			.build()
 			.parseSignedClaims(token)
 			.getPayload();
+	}
+
+	public boolean validateToken(String jwtToken, UserDetails userDetails) {
+		final String email = extractEmail(jwtToken);
+		return (email.equals(userDetails.getUsername()) && !isTokenExpired(jwtToken));
+	}
+
+	private boolean isTokenExpired(String jwtToken) {
+		return extractExpiration(jwtToken).before(new Date());
+	}
+
+	private Date extractExpiration(String jwtToken) {
+		return extractClaim(jwtToken, Claims::getExpiration);
 	}
 }

@@ -4,8 +4,11 @@ import java.io.IOException;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,6 +33,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		String email = null;
 		String jwtToken = null;
 		
+		if (request.getRequestURI().contains("/login") || request.getRequestURI().contains("/register") || request.getRequestURI().contains("/health")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+		
 		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 			jwtToken = requestTokenHeader.substring(7);
 			
@@ -45,11 +53,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 		
 		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			this.userDetailsService.loadUserByUsername(email);
+			UserDetails userDetails =  this.userDetailsService.loadUserByUsername(email);
+			if (jwtUtil.validateToken(jwtToken, userDetails)) {
+				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+				usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+			}
 		}
-		
 		filterChain.doFilter(request, response);
 	}
-	
-	
 }
