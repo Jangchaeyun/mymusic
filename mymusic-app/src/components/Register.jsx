@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { assets } from "../assets/assets";
+import toast from "react-hot-toast";
 
 const Register = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!email || !password || !confirmPassword) {
+      setError("모든 항목을 작성해 주세요");
+      toast.error("모든 항목을 작성해 주세요");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("비밀번호가 일치하지 않습니다");
+      toast.error("비밀번호가 일치하지 않습니다");
+      return;
+    }
+
+    
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900 via-black to-green-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-8">
@@ -19,7 +45,7 @@ const Register = () => {
 
         {/* Register form */}
         <div className="bg-gray-900/80 backdrop-blug-lg rounded-2xl p-8 shawdow-2xl border border-gray-700">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Email field */}
             <div>
               <label
@@ -36,6 +62,8 @@ const Register = () => {
                 required
                 className="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 placeholder="이메일 입력"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -55,6 +83,8 @@ const Register = () => {
                 required
                 className="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 placeholder="패스워드 생성"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -74,6 +104,8 @@ const Register = () => {
                 required
                 className="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 placeholder="패스워드 맞는지 확인"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
 
