@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { assets } from "../assets/assets";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { register } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +27,22 @@ const Register = () => {
       return;
     }
 
-    
+    setLoading(true);
+
+    try {
+      const result = await register(email, password);
+      if (result.success) {
+        toast.success(result.message);
+      } else {
+        toast.error(result.message);
+        setError(result.message);
+      }
+    } catch (e) {
+      toast.error("예상된 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -100,7 +117,7 @@ const Register = () => {
                 type="password"
                 name="confirmPassword"
                 id="confirmPassword"
-                autoComplete="new-password"
+                autoComplete="confirmPassword"
                 required
                 className="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 placeholder="패스워드 맞는지 확인"
