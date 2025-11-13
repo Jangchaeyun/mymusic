@@ -1,5 +1,0 @@
-package com.cherry.mymusicapi.security;
-
-public class JwtAuthenticationFilter {
-
-}
