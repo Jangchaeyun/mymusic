@@ -60,12 +60,28 @@ export const AuthProvider = ({ children }) => {
             role: response.data.role,
           })
         );
+        return {
+          success: true,
+        };
+      } else {
+        return {
+          success: false,
+          message: response.data.message || "로그인 실패",
+        };
       }
-    } catch (error) {}
+    } catch (error) {
+      return {
+        success: false,
+        message:
+          error.response.data.message ||
+          "네트워크 오류가 발생했습니다. 나중에 다시 시도해 주세요.",
+      };
+    }
   };
 
   const contextValue = {
     register,
+    login,
   };
 
   return (

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { assets } from "../assets/assets";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +19,22 @@ const Login = () => {
       toast.error("모든 항목을 작성해 주세요");
       return;
     }
-    console.log(email, password);
+
+    setLoading(true);
+    try {
+      const result = await login(email, password);
+      if (!result.success) {
+        toast.error(result.message);
+        setError(result.error);
+      }
+    } catch (error) {
+      setError(error.message);
+      toast.error(
+        "예기치 않은 오류가 발생했습니다. 나중에 다시 시도해 주세요."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900 via-black to-green-900 flex items-center justify-center p-4">
