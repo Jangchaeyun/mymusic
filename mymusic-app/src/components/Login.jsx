@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
-    if (!email | !password) {
+    if (!email || !password) {
       setError("모든 항목을 작성해 주세요");
       toast.error("모든 항목을 작성해 주세요");
       return;
@@ -91,6 +91,7 @@ const Login = () => {
                 required
                 className="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 placeholder="패스워드 입력"
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>

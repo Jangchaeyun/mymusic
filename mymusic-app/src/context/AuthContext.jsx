@@ -45,13 +45,13 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = axios.post(`${API_BASE_URL}/api/auth/login`, {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
         email,
         password,
       });
       if (response.status === 200) {
         setToken(response.data.token);
-        setUser({ email: response.data.user.email, role: response.data.role });
+        setUser({ email: response.data.email, role: response.data.role });
         localStorage.setItem("userToken", response.data.token);
         localStorage.setItem(
           "userData",
@@ -70,6 +70,7 @@ export const AuthProvider = ({ children }) => {
         };
       }
     } catch (error) {
+      console.error(error);
       return {
         success: false,
         message:
@@ -79,9 +80,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const isAuthenticated = () => {
+    return !!token && !!user;
+  };
+
   const contextValue = {
     register,
     login,
+    isAuthenticated,
   };
 
   return (
