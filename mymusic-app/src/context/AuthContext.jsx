@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
@@ -17,6 +17,18 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("userToken"));
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    const storedToken = localStorage.getItem("userToken");
+    const storedUser = localStorage.getItem("userData");
+
+    if (storedToken && storedUser) {
+      setToken(storedToken);
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
+  }, []);
 
   const register = async (email, password) => {
     try {
@@ -74,7 +86,7 @@ export const AuthProvider = ({ children }) => {
       return {
         success: false,
         message:
-          error.response.data.message ||
+          error.response.data ||
           "네트워크 오류가 발생했습니다. 나중에 다시 시도해 주세요.",
       };
     }

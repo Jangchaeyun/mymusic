@@ -3,7 +3,7 @@ import { assets } from "../assets/assets";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
-const Login = () => {
+const Login = ({ onSwitchToRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -106,7 +106,10 @@ const Login = () => {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-400">
               계정이 없으십니까?
-              <button className="text-green-400 hover:text-green-300 font-medium transition-colors cursor-pointer">
+              <button
+                onClick={onSwitchToRegister}
+                className="text-green-400 hover:text-green-300 font-medium transition-colors cursor-pointer"
+              >
                 여기서 회원가입
               </button>
             </p>
