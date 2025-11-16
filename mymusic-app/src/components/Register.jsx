@@ -33,6 +33,7 @@ const Register = ({ onSwitchToLogin }) => {
       const result = await register(email, password);
       if (result.success) {
         toast.success(result.message);
+        onSwitchToLogin();
       } else {
         toast.error(result.message);
         setError(result.message);
@@ -127,8 +128,18 @@ const Register = ({ onSwitchToLogin }) => {
             </div>
 
             {/* Submit */}
-            <button className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105">
-              가입
+            <button
+              disabled={loading}
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105"
+            >
+              {loading ? (
+                <div className="flex items-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  계정 생성 중...
+                </div>
+              ) : (
+                "계정 생성"
+              )}
             </button>
           </form>
 
