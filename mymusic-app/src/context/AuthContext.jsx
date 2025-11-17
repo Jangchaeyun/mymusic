@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("userToken"));
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -96,10 +96,13 @@ export const AuthProvider = ({ children }) => {
     return !!token && !!user;
   };
 
+  const logout = () => {};
+
   const contextValue = {
     register,
     login,
     isAuthenticated,
+    loading,
   };
 
   return (
