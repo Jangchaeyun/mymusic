@@ -96,13 +96,20 @@ export const AuthProvider = ({ children }) => {
     return !!token && !!user;
   };
 
-  const logout = () => {};
+  const logout = () => {
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem("userToken");
+    localStorage.removeItem("userData");
+  };
 
   const contextValue = {
     register,
     login,
     isAuthenticated,
     loading,
+    logout,
+    user,
   };
 
   return (

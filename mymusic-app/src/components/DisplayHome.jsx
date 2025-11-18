@@ -1,6 +1,9 @@
+import { useAuth } from "../context/AuthContext";
+
 const DisplayHome = () => {
+  const { logout } = useAuth();
   const handleLogout = () => {
-    console.log("User logged out");
+    logout();
   };
   return (
     <>
