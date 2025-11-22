@@ -2,6 +2,7 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
+export const API_BASE_URL = "http://localhost:8080";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -12,14 +13,11 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const API_BASE_URL = "http://localhost:8080";
-
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("userToken"));
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
     const storedToken = localStorage.getItem("userToken");
     const storedUser = localStorage.getItem("userData");
 
@@ -103,6 +101,10 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("userData");
   };
 
+  const getAuthHeaders = () => {
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  };
+
   const contextValue = {
     register,
     login,
@@ -110,6 +112,8 @@ export const AuthProvider = ({ children }) => {
     loading,
     logout,
     user,
+    token,
+    getAuthHeaders,
   };
 
   return (

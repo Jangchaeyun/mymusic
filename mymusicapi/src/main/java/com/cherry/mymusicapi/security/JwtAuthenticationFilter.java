@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			jwtToken = requestTokenHeader.substring(7);
 			
 			try {
-				jwtUtil.extractEmail(jwtToken);
+				email = jwtUtil.extractEmail(jwtToken);
 			} catch (IllegalArgumentException e) {
 				throw new RuntimeException("Unable to get JWT token");
 			} catch (Exception e) {

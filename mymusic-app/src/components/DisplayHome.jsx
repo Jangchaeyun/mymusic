@@ -1,19 +1,22 @@
 import { useAuth } from "../context/AuthContext";
 
 const DisplayHome = () => {
-  const { logout } = useAuth();
-  const handleLogout = () => {
-    logout();
-  };
   return (
     <>
-      <div>Displaying the albums and songs</div>
-      <button
-        className="bg-red-600 hover:bg-red-700 py-1 px-3 rounded-2xl text-[15px] cursor-pointer transition-colors flex"
-        onClick={handleLogout}
-      >
-        로그아웃
-      </button>
+      <div className="mb-4">
+        <h1 className="my-5 font-bold text-2xl">추천 차트</h1>
+        <div className="flex overflow-auto">
+          {/* Display the albums data */}
+          앨범 표시
+        </div>
+      </div>
+      <div className="mb-4">
+        <h1 className="my-5 font-bold text-2xl">오늘의 가장 큰 히트곡</h1>
+        <div className="flex overflow-auto">
+          {/* Display the songs data */}
+          노래 표시
+        </div>
+      </div>
     </>
   );
 };
