@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +26,7 @@ public class SongController {
 	private final SongService songService;
 	
 	@PostMapping
-	public ResponseEntity<?> addSong(@RequestPart("request") String requestString, @RequestPart("audio") MultipartFile audioFile, @RequestPart("image") MultipartFile imageFile) {
+	public ResponseEntity<?> addSong(@RequestParam("request") String requestString, @RequestPart("audio") MultipartFile audioFile, @RequestPart("image") MultipartFile imageFile) {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			SongRequest songRequest =  objectMapper.readValue(requestString, SongRequest.class);

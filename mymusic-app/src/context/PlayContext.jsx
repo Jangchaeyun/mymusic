@@ -9,7 +9,19 @@ export const PlayerContextProvider = ({ children }) => {
   const [albumsData, setAlbumsData] = useState([]);
   const { user, token, getAuthHeaders } = useAuth();
 
-  const getSongsData = async () => {};
+  const getSongsData = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/songs`, {
+        headers: getAuthHeaders(),
+      });
+      console.log(response);
+      const songs = response.data.songs || [];
+      setSongsData(songs);
+    } catch (error) {
+      console.error(error);
+      setSongsData([]);
+    }
+  };
 
   const getAlbumsData = async () => {
     try {
@@ -34,6 +46,7 @@ export const PlayerContextProvider = ({ children }) => {
   useEffect(() => {
     if (user && token) {
       getAlbumsData();
+      getSongsData();
     }
   }, [user, token]);
 
