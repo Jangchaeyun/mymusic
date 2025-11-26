@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PlayerContext } from "../context/PlayContext";
+import { assets } from "../assets/assets";
+import { Clock } from "lucide-react";
 
 const DisplayAlbum = ({ album }) => {
   const { id } = useParams();
@@ -9,8 +11,47 @@ const DisplayAlbum = ({ album }) => {
   return albumsData ? (
     <>
       <div className="mt-10 flex gap-8 flex-col md:flex-row md:items-end">
-        <img src={album.imageUrl} alt="" className="w-48 rounded" />
+        <img src={album?.imageUrl} alt="" className="w-48 rounded" />
+        <div className="flex flex-col">
+          <p>플레이리스트</p>
+          <h2 className="text-5xl font-bold mb-4 md:text-7xl">{album?.name}</h2>
+          <h4>{album?.desc}</h4>
+          <p className="mt-1">
+            <img
+              src={assets.logo}
+              alt="logo"
+              className="inline-block w-5 mr-1"
+            />
+            <b>MyMusic</b> ● 1,23,456 좋아요 ● <b>12곡, </b> 39분 32초
+          </p>
+        </div>
       </div>
+      <div className="grid grid-cols-3 sm:grid-cols-4 mt-10 mb-4 pl-2 text-[#a7a7a7]">
+        <p>
+          <b className="mr-4">#</b>
+        </p>
+        <p>앨범</p>
+        <p className="hidden sm:block">추가된 날짜</p>
+        <Clock className="m-auto w-4" />
+      </div>
+      <hr />
+      {songsData
+        .filter((song) => song.album === album?.name)
+        .map((item, index) => (
+          <div
+            className="grid grid-cols-3 sm:grid-cols-4 gap-2 p-2 items-center text-[#a7a7a7] hover:bg-[#ffffff2b] cursor-pointer"
+            key={index}
+          >
+            <p className="text-white">
+              <b className="mr-4 text-[#a7a7a7]">{index + 1}</b>
+              <img src={item.image} alt="" className="inline w-10 mr-5" />
+              {item.name}
+            </p>
+            <p className="text-[15px]">{album?.name}</p>
+            <p className="text-[15px] hidden sm:block">5일 전</p>
+            <p className="text-[15px] text-center">{item.duration}</p>
+          </div>
+        ))}
     </>
   ) : null;
 };
