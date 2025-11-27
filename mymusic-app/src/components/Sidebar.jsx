@@ -1,15 +1,25 @@
 import { ArrowRight, Home, Library, Plus, Search, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSearch } from "../context/SearchContext";
 
 const Sidebar = () => {
-  const [showSearchInput, setShowSearchInput] = useState(true);
+  const [showSearchInput, setShowSearchInput] = useState(false);
   const navigate = useNavigate();
+  const { searchQuery, setSearchQuery, setIsSearchActive, clearSearch } =
+    useSearch();
 
   const handleSearchClick = () => {
     setShowSearchInput(true);
+    setIsSearchActive(true);
     navigate("/search");
   };
+
+  const handleClearSearch = () => {
+    setShowSearchInput(false);
+    clearSearch();
+  };
+
   return (
     <div className="w-[25%] h-full p-2 flex-col gap-2 text-white hidden lg:flex">
       <div className="bg-[#121212] h-[15%] rounded flex flex-col justify-around">
@@ -30,16 +40,21 @@ const Sidebar = () => {
               <p className="fong-bold">검색</p>
             </div>
           ) : (
-            <div className="flex items-center gap-2 pl-4">
+            <div
+              onClick={handleSearchClick}
+              className="flex items-center gap-2 pl-4"
+            >
               <Search className="w-5 h-5 text-gray-400" />
               <input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 type="text"
                 placeholder="무엇을 듣고 싶으신가요?"
                 className="flex-1 bg-[#2a2a2a] text-white placeholder-gray-400 px-3 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
                 autoFocus
               />
               <button
-                onClick={handleSearchClick}
+                onClick={handleClearSearch}
                 className="p-1 hover:bg-gray-700 rounded-full transition-colors"
               >
                 <X className="w-4 h-4 text-gray-400 hover:text-white" />
