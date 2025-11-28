@@ -5,8 +5,12 @@ import { Toaster } from "react-hot-toast";
 import Display from "./components/Display";
 import AuthWrapper from "./components/AuthWrapper";
 import Sidebar from "./components/Sidebar";
+import Player from "./components/Player";
+import { useContext } from "react";
+import { PlayerContext } from "./context/PlayContext";
 
 const App = () => {
+  const { audioRef, track } = useContext(PlayerContext);
   return (
     <>
       <Toaster />
@@ -17,6 +21,8 @@ const App = () => {
             <Display />
           </div>
           {/* Player component */}
+          <Player />
+          <audio ref={audioRef} src={track ? track.file : ""} preload="auto" />
         </div>
       </AuthWrapper>
     </>

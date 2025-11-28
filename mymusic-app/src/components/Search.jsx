@@ -8,12 +8,34 @@ const Search = () => {
   const { songs, albums } = searchResults;
   const totalResults = songs.length + albums.length;
 
+  if (!isSearchActive) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+        <SearchIcon className="w-16 h-16 text-gray-400 mb-4" />
+        <h2 className="text-2xl font-bold  text-white mb-2">노래 검색</h2>
+        <p className="text-gray-400">좋아하는 노래와 앨범을 찾아보세요</p>
+      </div>
+    );
+  }
+
+  if (searchQuery.trim() === "") {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+        <SearchIcon className="w-16 h-16 text-gray-400 mb-4" />
+        <h2 className="text-2xl font-bold  text-white mb-2">
+          검색을 시작하려면 입력을 시작하세요
+        </h2>
+        <p className="text-gray-400">노래, 앨범 등을 검색하세요</p>
+      </div>
+    );
+  }
+
   if (totalResults === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
         <SearchIcon className="w-16 h-16 text-gray-400 mb-4" />
         <h2 className="text-2xl font-bold  text-white mb-2">검색 결과 없음</h2>
-        <p className="text-gray-400">다시 검색해주세요.</p>
+        <p className="text-gray-400">다른 것을 검색해보세요.</p>
       </div>
     );
   }
