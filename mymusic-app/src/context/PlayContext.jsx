@@ -41,9 +41,11 @@ export const PlayerContextProvider = ({ children }) => {
       const response = await axios.get(`${API_BASE_URL}/api/songs`, {
         headers: getAuthHeaders(),
       });
-      console.log(response);
       const songs = response.data.songs || [];
       setSongsData(songs);
+      if (songs.length > 0) {
+        setTrack(songs[0]);
+      }
     } catch (error) {
       console.error(error);
       setSongsData([]);
@@ -71,6 +73,7 @@ export const PlayerContextProvider = ({ children }) => {
     audioRef,
     seekBg,
     seekBar,
+    track,
     setTrack,
     playStatus,
     setPlayStatus,

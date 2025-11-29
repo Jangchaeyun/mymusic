@@ -22,7 +22,11 @@ const App = () => {
           </div>
           {/* Player component */}
           <Player />
-          <audio ref={audioRef} src={track ? track.file : ""} preload="auto" />
+          <audio
+            ref={audioRef}
+            src={track ? track?.file : ""}
+            preload="auto"
+          ></audio>
         </div>
       </AuthWrapper>
     </>
