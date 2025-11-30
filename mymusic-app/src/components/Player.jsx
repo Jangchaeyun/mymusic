@@ -42,7 +42,10 @@ const Player = () => {
       <div className="flex flex-col items-center gap-1 m-auto">
         <div className="flex gap-4">
           <Shuffle className="w-4 h-4 cursor-pointer text-white hover:text-green-500 transition-colors" />
-          <SkipBack className="w-4 h-5 cursor-pointer text-white hover:text-green-500 transition-colors" />
+          <SkipBack
+            onClick={previous}
+            className="w-4 h-5 cursor-pointer text-white hover:text-green-500 transition-colors"
+          />
           {playStatus ? (
             <Pause
               onClick={pause}

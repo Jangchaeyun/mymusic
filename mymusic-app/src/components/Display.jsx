@@ -28,24 +28,22 @@ const Display = () => {
       {/* Sticky navbar */}
       <div
         ref={displayRef}
-        className="sticky top-0 z-10 bg-[#121212]/95 backdrop:blur-sm border-b border-gray-800/50 px-6 pt-4 pb-2"
+        className="sticky top-0 z-10 bg-[#121212]/95 backdrop-blur-sm border-b border-gray-800/50 px-6 pt-4 pb-2"
       >
         <Navbar />
-        {/* Scrollable content */}
-        <div className="flex-1 px-6 pb-4 overflow-auto">
-          <Routes>
-            <Route path="/" element={<DisplayHome />} />
-            <Route
-              path="/album/:id"
-              element={
-                <DisplayAlbum
-                  album={albumsData.find((x) => x._id == albumId)}
-                />
-              }
-            />
-            <Route path="/search" element={<Search />} />
-          </Routes>
-        </div>
+      </div>
+      {/* Scrollable content */}
+      <div className="flex-1 px-6 pb-4 overflow-auto">
+        <Routes>
+          <Route path="/" element={<DisplayHome />} />
+          <Route
+            path="/album/:id"
+            element={
+              <DisplayAlbum album={albumsData.find((x) => x._id == albumId)} />
+            }
+          />
+          <Route path="/search" element={<Search />} />
+        </Routes>
       </div>
     </div>
   );

@@ -24,17 +24,51 @@ export const PlayerContextProvider = ({ children }) => {
   const seekBg = useRef();
   const seekBar = useRef();
 
-  const play = () => {};
+  const play = () => {
+    audioRef.current.play();
+    setPlayStatus(true);
+  };
 
-  const pause = () => {};
+  const pause = () => {
+    audioRef.current.pause();
+    setPlayStatus(false);
+  };
 
-  const playWithId = async (id) => {};
+  const playWithId = async (id) => {
+    await songsData.map((item) => {
+      if (id === item._id) {
+        setTrack(item);
+      }
+    });
+    await audioRef.current.play();
+    setPlayStatus(true);
+  };
 
-  const previous = async () => {};
+  const previous = async () => {
+    songsData.map(async (item, index) => {
+      if (track._id === item._id && index > 0) {
+        await setTrack(songsData[index - 1]);
+        await audioRef.current.play();
+        setPlayStatus(true);
+      }
+    });
+  };
 
-  const next = async () => {};
+  const next = async () => {
+    songsData.map(async (item, index) => {
+      if (track._id === item._id && index < songsData.length - 1) {
+        await setTrack(songsData[index + 1]);
+        await audioRef.current.play();
+        setPlayStatus(true);
+      }
+    });
+  };
 
-  const seekSong = (e) => {};
+  const seekSong = (e) => {
+    audioRef.current.currentTime =
+      (e.nativeEvent.offsetX / seekBg.current.offsetWidth) *
+      audioRef.current.duration;
+  };
 
   const getSongsData = async () => {
     try {
@@ -93,6 +127,45 @@ export const PlayerContextProvider = ({ children }) => {
       getSongsData();
     }
   }, [user, token]);
+
+  // Setup audio evenr listeners
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateSeekBar = () => {
+      if (seekBar.current && audio.duration) {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        seekBar.current.style.width = Math.floor(progress) + "%";
+        setTime({
+          currentTime: {
+            second: Math.floor(audio.currentTime % 60),
+            minute: Math.floor(audio.currentTime / 60),
+          },
+          totalTime: {
+            second: Math.floor(audio.duration % 60),
+            minute: Math.floor(audio.duration / 60),
+          },
+        });
+      }
+    };
+
+    const handleLoadMetadata = () => {
+      if (seekBar.current) {
+        seekBar.current.style.width = "0%";
+      }
+    };
+
+    // add event listeners
+    audio.addEventListener("timeupdate", updateSeekBar);
+    audio.addEventListener("loadmetadata", handleLoadMetadata);
+
+    // cleanup function
+    return () => {
+      audio.removeEventListener("timeupdate", updateSeekBar);
+      audio.removeEventListener("loadmetadata", handleLoadMetadata);
+    };
+  }, [track]);
 
   return (
     <PlayerContext.Provider value={contextValue}>

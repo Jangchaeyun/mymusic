@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cherry.mymusicapi.document.Song;
 import com.cherry.mymusicapi.dto.SongListResponse;
 import com.cherry.mymusicapi.dto.SongRequest;
 import com.cherry.mymusicapi.service.SongService;
@@ -32,9 +33,10 @@ public class SongController {
 			SongRequest songRequest =  objectMapper.readValue(requestString, SongRequest.class);
 			songRequest.setImageFile(imageFile);
 			songRequest.setAudioFile(audioFile);
-			songService.addSong(songRequest);
 			
-			return ResponseEntity.status(HttpStatus.CREATED).body(songService.addSong(songRequest));
+			Song savedSongs = songService.addSong(songRequest);
+			
+			return ResponseEntity.status(HttpStatus.CREATED).body(savedSongs);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
