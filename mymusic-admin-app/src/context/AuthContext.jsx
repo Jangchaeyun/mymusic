@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useContext, useState } from "react";
 
 export const AuthContext = createContext();
@@ -8,6 +9,8 @@ export const useAuth = () => {
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
+
+  return context;
 };
 
 export const AuthProvider = ({ children }) => {
@@ -15,10 +18,43 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("adminToken"));
   const [loading, setLoading] = useState(true);
 
+  const login = async (email, password) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
+        email,
+        password,
+      });
+      if (response.status === 200) {
+        setToken(response.data.token);
+        setUser({ email: response.data.email, role: response.data.role });
+        localStorage.setItem("adminToken", response.data.token);
+        localStorage.setItem(
+          "adminUser",
+          JSON.stringify({
+            email: response.data.email,
+            role: response.data.role,
+          })
+        );
+        return { success: true };
+      } else {
+        return {
+          success: false,
+          message: response.data.message || "로그인 실패",
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data || "로그인 중 오류가 발생했습니다.",
+      };
+    }
+  };
+
   const contextValue = {
     user,
     token,
     loading,
+    login,
   };
 
   return (

@@ -1,7 +1,40 @@
 import { Lock, Mail } from "lucide-react";
 import { assets } from "../assets/assets";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      toast.error("이메일과 비밀번호를 모두 입력해주세요.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const result = await login(email, password);
+      if (result.success) {
+        toast.success("로그인 성공!");
+        navigate("/add-song");
+      } else {
+        toast.error(result.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-8">
@@ -12,11 +45,11 @@ const Login = () => {
             <h1 className="ml-3 text-3xl font-bold text-white">MyMusic</h1>
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">관리자 패널</h2>
-          <p className="texr-gray-300">음악을 관리하려면 로그인하세요</p>
+          <p className="text-gray-300">음악을 관리하려면 로그인하세요</p>
         </div>
         {/* Login form */}
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/20">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Email field */}
             <div>
               <label
@@ -33,6 +66,8 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
                   required
                   className="block w-full pl-10 pr-3 py-3 border border-gray-600 rounded-lg bg-gray-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
@@ -54,6 +89,8 @@ const Login = () => {
                   type="password"
                   name="password"
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   autoComplete="password"
                   required
                   className="block w-full pl-10 pr-3 py-3 border border-gray-600 rounded-lg bg-gray-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
