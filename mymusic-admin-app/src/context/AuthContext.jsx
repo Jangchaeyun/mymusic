@@ -1,5 +1,6 @@
 import axios from "axios";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { API_BASE_URL } from "../App";
 
 export const AuthContext = createContext();
 
@@ -50,11 +51,40 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const isAuthenticated = () => {
+    return !!token && !!user;
+  };
+
+  const isAdmin = () => {
+    return user && user.role === "admin";
+  };
+
+  const logout = () => {
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminUser");
+  };
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("adminToken");
+    const storedUser = localStorage.getItem("adminUser");
+
+    if (storedToken && storedUser) {
+      setToken(storedToken);
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
+  }, []);
+
   const contextValue = {
     user,
     token,
     loading,
     login,
+    isAuthenticated,
+    isAdmin,
+    logout,
   };
 
   return (
