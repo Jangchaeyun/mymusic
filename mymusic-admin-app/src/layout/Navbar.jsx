@@ -1,11 +1,20 @@
-import { Menu, User, X } from "lucide-react";
+import { LogOut, Menu, User, X } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { assets } from "../assets/assets";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ activeMenu }) => {
   const [openSideMenu, setOpenSideMenu] = useState(false);
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    toast.success("로그아웃 되었습니다!");
+    navigate("/login");
+  };
   return (
     <div className="flex items-center justify-between gap-5 bg-white border border-b border-gray-200/50 backdrop-blur-[2px] py-4 px-4 sm:px-7 sticky top-0 z-30">
       {/* Left side menu button and title */}
@@ -40,6 +49,14 @@ const Navbar = ({ activeMenu }) => {
             {user?.role}
           </span>
         </div>
+        <button
+          onClick={() => handleLogout}
+          title="로그아웃"
+          className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2 rounded-lg transition-colors duration-200"
+        >
+          <LogOut className="w-4 h-4" />
+          <span className="hidden sm:inline text-sm font-medium">로그아웃</span>
+        </button>
       </div>
     </div>
   );
