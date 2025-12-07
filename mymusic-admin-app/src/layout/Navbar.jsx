@@ -1,6 +1,7 @@
-import { Menu, X } from "lucide-react";
+import { Menu, User, X } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { assets } from "../assets/assets";
 
 const Navbar = ({ activeMenu }) => {
   const [openSideMenu, setOpenSideMenu] = useState(false);
@@ -19,6 +20,26 @@ const Navbar = ({ activeMenu }) => {
             <Menu className="text-2xl" />
           )}
         </button>
+
+        <div className="flex items-center gap-2">
+          <img src={assets.logo} alt="logo" className="w-12 h-12" />
+          <span className="text-2xl font-bold text-black truncate">
+            MyMusic
+          </span>
+        </div>
+      </div>
+
+      {/* Right side - User info and logout */}
+      <div className="flex items-center gap-3">
+        <div className="hidden sm:flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
+          <User className="w-4 h-4 text-gray-600" />
+          <span className="text-sm font-medium text-gray-700 truncate max-w-32">
+            {user?.email}
+          </span>
+          <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+            {user?.role}
+          </span>
+        </div>
       </div>
     </div>
   );
