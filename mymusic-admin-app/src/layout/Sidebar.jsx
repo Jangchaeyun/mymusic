@@ -1,4 +1,4 @@
-const Sidebar = () => {
+const Sidebar = ({ activeMenu }) => {
   return <div>Sidebar</div>;
 };
 
