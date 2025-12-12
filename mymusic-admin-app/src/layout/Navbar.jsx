@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { assets } from "../assets/assets";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Sidebar from "./Sidebar";
 
 const Navbar = ({ activeMenu }) => {
   const [openSideMenu, setOpenSideMenu] = useState(false);
@@ -50,7 +51,7 @@ const Navbar = ({ activeMenu }) => {
           </span>
         </div>
         <button
-          onClick={() => handleLogout}
+          onClick={handleLogout}
           title="로그아웃"
           className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2 rounded-lg transition-colors duration-200"
         >
@@ -58,6 +59,13 @@ const Navbar = ({ activeMenu }) => {
           <span className="hidden sm:inline text-sm font-medium">로그아웃</span>
         </button>
       </div>
+
+      {/* Mobile side menu */}
+      {openSideMenu && (
+        <div className="fixed top-[73px] left-0 right-0 bg-white border-b border-gray-200 lg:hidden z-20">
+          <Sidebar activeMenu={activeMenu} />
+        </div>
+      )}
     </div>
   );
 };

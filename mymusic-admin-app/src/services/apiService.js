@@ -37,3 +37,32 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export const songsAPI = {
+  add: (formData) => {
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    return apiClient.post("/api/songs", formData, config);
+  },
+  list: () => apiClient.get("/api/songs"),
+  remove: (id) => apiClient.delete(`api/songs/${id}`),
+};
+
+export const albumsAPI = {
+  add: (formData) => {
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    return apiClient.post("/api/albums", formData, config);
+  },
+  list: () => apiClient.get("/api/albums"),
+  remove: (id) => apiClient.delete(`api/albums/${id}`),
+};
+
+export default apiClient;

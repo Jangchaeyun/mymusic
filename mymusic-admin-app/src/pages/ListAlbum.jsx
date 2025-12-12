@@ -1,7 +1,9 @@
+import DashboardLayout from "../layout/DashboardLayout";
+
 const ListAlbum = () => {
   return (
-    <DashboardLayout activeMenu="List Albums">
-      <div>새로운 노래 추가</div>
+    <DashboardLayout activeMenu="앨범 목록">
+      <div>앨범 목록</div>
     </DashboardLayout>
   );
 };
