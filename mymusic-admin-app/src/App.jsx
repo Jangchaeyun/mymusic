@@ -10,6 +10,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 export const API_BASE_URL = "http://localhost:8080";
+
 const App = () => {
   return (
     <AuthProvider>

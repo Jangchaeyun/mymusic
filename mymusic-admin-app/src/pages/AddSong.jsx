@@ -1,17 +1,32 @@
 import { Check, Image, Music } from "lucide-react";
 import DashboardLayout from "../layout/DashboardLayout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { albumsAPI } from "../services/apiService";
+import toast from "react-hot-toast";
 
 const AddSong = () => {
   const [image, setImage] = useState(false);
   const [song, setSong] = useState(false);
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [album, setAlbum] = useState("");
+  const [album, setAlbum] = useState("none");
   const [loading, setLoading] = useState(false);
   const [albumData, setAlbumData] = useState([]);
 
   const onSubmitHandler = (e) => {};
+
+  const loadAlbumData = async () => {
+    try {
+      const response = await albumsAPI.list();
+      setAlbumData(response.data.albums);
+    } catch (error) {
+      toast.error("Failed to load albums");
+    }
+  };
+
+  useEffect(() => {
+    loadAlbumData();
+  }, []);
 
   return (
     <DashboardLayout activeMenu="노래 추가">
@@ -95,6 +110,23 @@ const AddSong = () => {
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
             />
+          </div>
+
+          {/* Albums */}
+          <div className="flex flex-col gap-2.5">
+            <p>앨범</p>
+            <select
+              defaultValue={album}
+              onChange={() => setAlbum(e.target.value)}
+              className="bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[150px]"
+            >
+              <option value="none">없음</option>
+              {albumData.map((album, index) => (
+                <option value={album.data} key={index}>
+                  {album.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Submit button */}
