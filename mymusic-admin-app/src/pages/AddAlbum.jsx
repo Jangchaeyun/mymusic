@@ -1,6 +1,8 @@
 import { useState } from "react";
 import DashboardLayout from "../layout/DashboardLayout";
 import { Image } from "lucide-react";
+import toast from "react-hot-toast";
+import { albumsAPI } from "../services/apiService";
 
 const AddAlbum = () => {
   const [image, setImage] = useState(false);
@@ -9,7 +11,35 @@ const AddAlbum = () => {
   const [desc, setDesc] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const onSubmitHandler = (e) => {};
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      const request = {
+        name,
+        desc,
+        bgColor: colour,
+      };
+      formData.append("request", JSON.stringify(request));
+      formData.append("file", image);
+
+      const response = await albumsAPI.add(formData);
+      if (response.status === 201) {
+        toast.success("앨범이 성공적으로 추가되었습니다.");
+        setName("");
+        setDesc("");
+        setImage(false);
+      } else {
+        toast.error(
+          "앨범을 추가하는 중 오류가 발생했습니다. 다시 시도해 주세요."
+        );
+      }
+    } catch (err) {
+      toast.error("앨범 추가 중 오류가 발생했습니다. 다시 시도해 주세요.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <DashboardLayout activeMenu="앨범 추가">
