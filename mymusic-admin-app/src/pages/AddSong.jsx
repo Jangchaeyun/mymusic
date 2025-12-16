@@ -1,7 +1,7 @@
 import { Check, Image, Music } from "lucide-react";
 import DashboardLayout from "../layout/DashboardLayout";
 import { useEffect, useState } from "react";
-import { albumsAPI } from "../services/apiService";
+import { albumsAPI, songsAPI } from "../services/apiService";
 import toast from "react-hot-toast";
 
 const AddSong = () => {
@@ -14,7 +14,36 @@ const AddSong = () => {
   const [albumData, setAlbumData] = useState([]);
 
   const onSubmitHandler = async (e) => {
-    
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      const request = {
+        name,
+        desc,
+        album,
+      };
+      formData.append("request", JSON.stringify(request));
+      formData.append("audio", song);
+      formData.append("image", image);
+      const response = await songsAPI.add(formData);
+      if (response.status === 201) {
+        toast.success("성공적으로 노래가 추가되었습니다!");
+        setName("");
+        setDesc("");
+        setAlbum("none");
+        setImage(false);
+        setSong(false);
+      } else {
+        toast.error(
+          "곡을 추가하는 중 오류가 발생했습니다. 다시 시도해 주세요!"
+        );
+      }
+    } catch (error) {
+      toast.error("곡을 추가하는 동안 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const loadAlbumData = async () => {
