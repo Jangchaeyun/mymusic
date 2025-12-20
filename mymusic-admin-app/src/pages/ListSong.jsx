@@ -20,6 +20,18 @@ const ListSong = () => {
     }
   };
 
+  const removeSong = async (id) => {
+    try {
+      const response = await songsAPI.remove(id);
+      if (response.status === 204) {
+        toast.success("노래 삭제 완료");
+        await fetchSongs();
+      }
+    } catch (error) {
+      toast.error("노래 삭제 실패");
+    }
+  };
+
   useEffect(() => {
     fetchSongs();
   }, []);
@@ -104,6 +116,7 @@ const ListSong = () => {
                     {/* Action button */}
                     <div className="col-span-2 flex justify-center">
                       <button
+                        onClick={() => removeSong(song._id)}
                         title="앨범 삭제"
                         className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors duration-200 group"
                       >

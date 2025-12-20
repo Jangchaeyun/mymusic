@@ -148,12 +148,12 @@ const AddSong = () => {
             <p>앨범</p>
             <select
               defaultValue={album}
-              onChange={() => setAlbum(e.target.value)}
+              onChange={(e) => setAlbum(e.target.value)}
               className="bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[150px]"
             >
               <option value="none">없음</option>
               {albumData.map((album, index) => (
-                <option value={album.data} key={index}>
+                <option value={album.name} key={index}>
                   {album.name}
                 </option>
               ))}
